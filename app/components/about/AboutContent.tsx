@@ -1,6 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
+import ProjectsSection from "./ProjectsSection";
+import HobbiesSection from "./HobbiesSection";
 
 interface TimelineEntry {
   organization: string;
@@ -13,31 +15,31 @@ interface TimelineEntry {
 export default function AboutContent() {
   const timelineEntries: TimelineEntry[] = [
     {
-      organization: "Software Developer",
-      role: "Full-Stack Development",
-      description: "Building elegant digital experiences with precision and passion",
-      period: "2020 - Now",
+      organization: "BizReach Inc.",
+      role: "Software Developer",
+      description: "Working on internal AI applications",
+      period: "2026 - Now",
       color: "bg-blue-500",
     },
     {
-      organization: "Tennis Professional",
-      role: "Competitive Player & Coach",
-      description: "10+ years of experience bringing discipline and strategic thinking",
-      period: "2014 - Now",
+      organization: "CONNECT Inc.",
+      role: "Software Developer",
+      description: "Worked on a healthcare application for the elderly",
+      period: "2024 - 2025",
       color: "bg-[#bcff4f]",
     },
     {
-      organization: "Education",
-      role: "Computer Science & Web Development",
-      description: "Self-taught developer with continuous learning in modern technologies",
-      period: "2020 - Now",
+      organization: "Study Abroad and Work in Canada",
+      role: "",
+      description: "Studied at Cornerstone Community College and worked a couple of jobs",
+      period: "2021 - 2024",
       color: "bg-green-500",
     },
     {
-      organization: "Projects",
-      role: "Portfolio & Web Applications",
-      description: "Creating innovative solutions combining tennis insights with code",
-      period: "2020 - Now",
+      organization: "DUNLOP",
+      role: "Sales & Marketing",
+      description: "Sold DUNLOP/BabolaT products to clients",
+      period: "2018 - 2021",
       color: "bg-red-500",
     },
   ];
@@ -47,7 +49,7 @@ export default function AboutContent() {
       <div className="flex gap-16">
         {/* Left Column - Timeline Title */}
         <div className="flex-shrink-0">
-          <h2 className="font-serif text-4xl font-bold text-[#1a1a1a] md:text-5xl">
+          <h2 className="font-serif text-2xl font-bold text-[#1a1a1a] md:text-3xl">
             Timeline
           </h2>
         </div>
@@ -87,8 +89,8 @@ export default function AboutContent() {
                         <p className="mt-1 text-sm italic text-[#666]">
                           {entry.role}
                         </p>
-                        <p className="mt-2 text-sm leading-relaxed text-[#666]">
-                          • {entry.description}
+                        <p className="mt-2 list-disc space-y-1 pl-5 text-sm leading-relaxed text-[#666]">
+                          {entry.description}
                         </p>
                       </div>
                       <div className="flex-shrink-0">
@@ -102,6 +104,12 @@ export default function AboutContent() {
           </div>
         </div>
       </div>
+
+      {/* Projects Section */}
+      <ProjectsSection />
+
+      {/* Hobbies Section */}
+      <HobbiesSection />
     </section>
   );
 }
