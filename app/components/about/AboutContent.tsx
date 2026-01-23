@@ -45,11 +45,11 @@ export default function AboutContent() {
   ];
 
   return (
-    <section className="mx-auto max-w-[1100px] px-12 pb-24 md:px-20 lg:px-24">
-      <div className="flex gap-16">
+    <section className="mx-auto max-w-[1100px] px-4 pb-16 sm:px-8 sm:pb-24 md:px-12 lg:px-20 xl:px-24">
+      <div className="flex flex-col gap-8 sm:flex-row sm:gap-12 md:gap-16">
         {/* Left Column - Timeline Title */}
         <div className="flex-shrink-0">
-          <h2 className="font-serif text-2xl font-bold text-[#1a1a1a] md:text-3xl">
+          <h2 className="font-serif text-xl font-bold text-[#1a1a1a] sm:text-2xl md:text-3xl">
             Timeline
           </h2>
         </div>
@@ -61,7 +61,7 @@ export default function AboutContent() {
             <div className="absolute left-0 top-0 h-full w-0.5 bg-[#E5E5E5]"></div>
 
             {/* Timeline Entries */}
-            <div className="space-y-12">
+            <div className="space-y-8 sm:space-y-12">
               {timelineEntries.map((entry, index) => (
                 <motion.div
                   key={index}
@@ -69,32 +69,32 @@ export default function AboutContent() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, amount: 0.3 }}
                   transition={{ duration: 0.5, ease: "easeOut", delay: index * 0.1 }}
-                  className="relative flex items-start gap-6"
+                  className="relative flex items-start gap-4 sm:gap-6"
                 >
                   {/* Colored Marker */}
                   <div className="relative z-10 flex-shrink-0">
                     <div
-                      className={`h-4 w-4 rounded-full ${entry.color} border-2 border-white shadow-sm`}
-                      style={{ marginLeft: "-8px" }}
+                      className={`h-3 w-3 rounded-full ${entry.color} border-2 border-white shadow-sm sm:h-4 sm:w-4`}
+                      style={{ marginLeft: "-6px" }}
                     ></div>
                   </div>
 
                   {/* Content */}
-                  <div className="flex-1">
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-[#1a1a1a] md:text-lg">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-base font-semibold text-[#1a1a1a] sm:text-base md:text-lg">
                           {entry.organization}
                         </h3>
-                        <p className="mt-1 text-sm italic text-[#666]">
+                        <p className="mt-1 text-xs italic text-[#666] sm:text-sm">
                           {entry.role}
                         </p>
-                        <p className="mt-2 list-disc space-y-1 pl-5 text-sm leading-relaxed text-[#666]">
+                        <p className="mt-2 text-xs leading-relaxed text-[#666] sm:text-sm">
                           {entry.description}
                         </p>
                       </div>
                       <div className="flex-shrink-0">
-                        <p className="text-sm text-[#1a1a1a]">{entry.period}</p>
+                        <p className="text-xs text-[#1a1a1a] sm:text-sm">{entry.period}</p>
                       </div>
                     </div>
                   </div>

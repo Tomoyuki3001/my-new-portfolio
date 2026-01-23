@@ -35,7 +35,7 @@ export default function HobbiesSection() {
   ];
 
   return (
-    <div className="mt-24 flex gap-16">
+    <div className="mt-16 flex flex-col gap-8 sm:mt-24 sm:flex-row sm:gap-12 md:gap-16">
       {/* Left Column - Hobbies Title */}
       <div className="shrink-0">
         <motion.h2
@@ -43,7 +43,7 @@ export default function HobbiesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="font-serif text-2xl font-bold text-[#1a1a1a] md:text-3xl"
+          className="font-serif text-xl font-bold text-[#1a1a1a] sm:text-2xl md:text-3xl"
         >
           Hobbies
         </motion.h2>
@@ -56,7 +56,7 @@ export default function HobbiesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
-          className="grid grid-cols-1 gap-6 sm:grid-cols-2"
+          className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6"
         >
           {hobbyCards.map((hobby, index) => (
             <motion.div
@@ -65,21 +65,25 @@ export default function HobbiesSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 + index * 0.1 }}
-              className="flex flex-col gap-3 rounded-lg border border-[#E5E5E5] bg-white p-6 transition-all hover:border-[#bcff4f]"
+              className="flex flex-col gap-3 rounded-lg border border-[#E5E5E5] bg-white p-4 transition-all hover:border-[#bcff4f] sm:p-6"
             >
-              <div className="flex items-start gap-4">
+              <div className="flex items-start gap-3 sm:gap-4">
                 <div className="shrink-0">{hobby.icon}</div>
-                <div className="flex-1">
-                  <h3 className="mb-1 font-semibold text-[#1a1a1a]">{hobby.title}</h3>
-                  <p className="text-sm text-[#666]">{hobby.description}</p>
+                <div className="flex-1 min-w-0">
+                  <h3 className="mb-1 text-base font-semibold text-[#1a1a1a] sm:text-base md:text-lg">
+                    {hobby.title}
+                  </h3>
+                  <p className="text-xs leading-relaxed text-[#666] sm:text-sm">
+                    {hobby.description}
+                  </p>
                 </div>
               </div>
               {hobby.stats && (
                 <div className="mt-2 border-t border-[#E5E5E5] pt-3">
-                  <span className="font-serif text-2xl font-bold text-[#bcff4f]">
+                  <span className="font-serif text-xl font-bold text-[#bcff4f] sm:text-2xl">
                     {hobby.stats.value}
                   </span>
-                  <p className="mt-1 text-xs font-medium uppercase tracking-wider text-[#bcff4f]">
+                  <p className="mt-1 text-[10px] font-medium uppercase tracking-wider text-[#bcff4f] sm:text-xs">
                     {hobby.stats.label}
                   </p>
                 </div>

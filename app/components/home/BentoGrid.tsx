@@ -7,8 +7,8 @@ import IntroductionCard from "./IntroductionCard";
 
 export default function BentoGrid() {
   return (
-    <section id="work" className="mx-auto max-w-[1100px] px-12 pb-24 md:px-20 lg:px-24">
-      <div className="grid grid-cols-2 gap-4">
+    <section id="work" className="mx-auto max-w-[1100px] px-4 pb-24 sm:px-8 md:px-12 lg:px-20 xl:px-24">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <IntroductionCard />
         <ProjectCard />
         <AboutMeCard delay={0.2} />

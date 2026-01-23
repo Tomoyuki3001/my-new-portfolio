@@ -17,7 +17,7 @@ export default function TennisRacketCard({ delay = 0.2 }: TennisRacketCardProps)
       transition={{ duration: 0.5, ease: "easeOut", delay }}
       className="group relative overflow-hidden rounded-lg border border-[#E5E5E5] bg-white"
     >
-      <div className="relative h-full min-h-[400px] p-8 md:p-12">
+      <div className="relative h-full min-h-[300px] p-6 sm:min-h-[400px] sm:p-8 md:p-12">
         <div className="absolute inset-0">
           <Image
             src={Vancouver}
@@ -31,11 +31,11 @@ export default function TennisRacketCard({ delay = 0.2 }: TennisRacketCardProps)
         </div>
         <div className="relative z-10 flex h-full flex-col justify-between">
           <div>
-            <h2 className="mb-4 font-serif text-2xl font-bold text-white md:text-2xl lg:text-3xl">
+            <h2 className="mb-4 font-serif text-xl font-bold text-white sm:text-2xl md:text-2xl lg:text-3xl">
               My Life
             </h2>
           </div>
-          <button className="w-fit rounded-full bg-[#bcff4f] px-6 py-3 text-sm font-semibold uppercase tracking-wider text-[#1a1a1a] transition-all hover:bg-[#bcff4f]/90">
+          <button className="w-fit rounded-full bg-[#bcff4f] px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#1a1a1a] transition-all hover:bg-[#bcff4f]/90 sm:px-6 sm:py-3 sm:text-sm">
             <a href="/about">
               About Me
             </a>

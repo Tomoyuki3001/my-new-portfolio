@@ -208,7 +208,7 @@ export default function SpotifySection() {
   const listTracks = tracks.slice(1, 5);
 
   return (
-    <section className="mx-auto max-w-[1100px] px-12 pb-24 md:px-20 lg:px-24">
+    <section className="mx-auto max-w-[1100px] px-4 pb-16 sm:px-8 sm:pb-24 md:px-12 lg:px-20 xl:px-24">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -216,14 +216,14 @@ export default function SpotifySection() {
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
         {/* Header with Tabs */}
-        <div className="mb-8 flex justify-between gap-4">
-          <h2 className="font-serif text-2xl font-bold text-[#1a1a1a] md:text-3xl">
+        <div className="mb-6 flex flex-col gap-4 sm:mb-8 sm:flex-row sm:justify-between">
+          <h2 className="font-serif text-xl font-bold text-[#1a1a1a] sm:text-2xl md:text-3xl">
             Recently Played
           </h2>
           <div className="flex gap-2">
             <button
               onClick={() => setActiveTab("recently")}
-              className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${activeTab === "recently"
+              className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all sm:px-4 sm:py-2 sm:text-sm ${activeTab === "recently"
                   ? "bg-gray-200 text-[#1a1a1a]"
                   : "text-gray-600 hover:text-[#1a1a1a]"
                 }`}
@@ -232,7 +232,7 @@ export default function SpotifySection() {
             </button>
             <button
               onClick={() => setActiveTab("top")}
-              className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${activeTab === "top"
+              className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all sm:px-4 sm:py-2 sm:text-sm ${activeTab === "top"
                   ? "bg-gray-200 text-[#1a1a1a]"
                   : "text-gray-600 hover:text-[#1a1a1a]"
                 }`}
@@ -244,48 +244,48 @@ export default function SpotifySection() {
 
         {/* Connect Button or Content */}
         {!isAuthenticated && tracks.length === 0 && !isLoading ? (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-[#E5E5E5] bg-white p-12 text-center">
+          <div className="flex flex-col items-center justify-center rounded-2xl border border-[#E5E5E5] bg-white p-6 text-center sm:p-8 md:p-12">
             <SpotifyIcon />
-            <h3 className="mb-2 mt-4 font-serif text-xl font-bold text-[#1a1a1a]">
+            <h3 className="mb-2 mt-4 font-serif text-lg font-bold text-[#1a1a1a] sm:text-xl">
               Connect Your Spotify Account
             </h3>
-            <p className="mb-6 text-gray-600">
+            <p className="mb-6 text-sm text-gray-600 sm:text-base">
               Connect your Spotify account to display your recently played tracks
               and top tracks.
             </p>
             <button
               onClick={handleConnectSpotify}
-              className="rounded-full bg-[#1DB954] px-6 py-3 font-semibold text-white transition-all hover:bg-[#1ed760]"
+              className="rounded-full bg-[#1DB954] px-5 py-2.5 text-sm font-semibold text-white transition-all hover:bg-[#1ed760] sm:px-6 sm:py-3"
             >
               Connect with Spotify
             </button>
             {error && (
-              <p className="mt-4 text-sm text-red-600">{error}</p>
+              <p className="mt-4 text-xs text-red-600 sm:text-sm">{error}</p>
             )}
             <p className="mt-4 text-xs text-gray-500">
               Note: Currently showing demo data. Connect your account to see your real tracks.
             </p>
           </div>
         ) : isLoading ? (
-          <div className="flex items-center justify-center rounded-2xl border border-[#E5E5E5] bg-white p-12">
+          <div className="flex items-center justify-center rounded-2xl border border-[#E5E5E5] bg-white p-8 sm:p-12">
             <div className="text-center">
-              <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-4 border-[#1DB954] border-t-transparent"></div>
-              <p className="text-gray-600">Loading your tracks...</p>
+              <div className="mb-4 inline-block h-6 w-6 animate-spin rounded-full border-4 border-[#1DB954] border-t-transparent sm:h-8 sm:w-8"></div>
+              <p className="text-sm text-gray-600 sm:text-base">Loading your tracks...</p>
             </div>
           </div>
         ) : error ? (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-[#E5E5E5] bg-white p-12 text-center">
-            <p className="mb-4 text-red-600">{error}</p>
+          <div className="flex flex-col items-center justify-center rounded-2xl border border-[#E5E5E5] bg-white p-6 text-center sm:p-8 md:p-12">
+            <p className="mb-4 text-sm text-red-600 sm:text-base">{error}</p>
             <button
               onClick={handleConnectSpotify}
-              className="rounded-full bg-[#1DB954] px-6 py-3 font-semibold text-white transition-all hover:bg-[#1ed760]"
+              className="rounded-full bg-[#1DB954] px-5 py-2.5 text-sm font-semibold text-white transition-all hover:bg-[#1ed760] sm:px-6 sm:py-3"
             >
               Reconnect Spotify
             </button>
           </div>
         ) : tracks.length === 0 ? (
-          <div className="flex items-center justify-center rounded-2xl border border-[#E5E5E5] bg-white p-12">
-            <p className="text-gray-600">No tracks found.</p>
+          <div className="flex items-center justify-center rounded-2xl border border-[#E5E5E5] bg-white p-8 sm:p-12">
+            <p className="text-sm text-gray-600 sm:text-base">No tracks found.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -296,13 +296,13 @@ export default function SpotifySection() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="group relative overflow-hidden rounded-2xl bg-[#1DB954] p-6 lg:col-span-2"
+                className="group relative overflow-hidden rounded-2xl bg-[#1DB954] p-4 sm:p-6 lg:col-span-2"
               >
-                <div className="absolute right-4 top-4 z-10 text-white opacity-90">
+                <div className="absolute right-3 top-3 z-10 text-white opacity-90 sm:right-4 sm:top-4">
                   <SpotifyIcon />
                 </div>
                 <div className="flex flex-col items-center text-center">
-                  <div className="relative mb-4 h-48 w-48 overflow-hidden rounded-lg bg-gray-800">
+                  <div className="relative mb-3 h-32 w-32 overflow-hidden rounded-lg bg-gray-800 sm:mb-4 sm:h-48 sm:w-48">
                     <Image
                       src={featuredTrack.albumArt}
                       alt={`${featuredTrack.title} by ${featuredTrack.artist}`}
@@ -311,35 +311,36 @@ export default function SpotifySection() {
                       unoptimized
                     />
                   </div>
-                  <h3 className="mb-2 text-2xl font-bold text-white md:text-3xl">
+                  <h3 className="mb-2 text-lg font-bold text-white sm:text-xl md:text-2xl lg:text-3xl">
                     {featuredTrack.title}
                   </h3>
-                  <div className="mb-4 flex items-center gap-2">
+                  <div className="mb-3 flex flex-wrap items-center justify-center gap-2 sm:mb-4">
                     {featuredTrack.previewUrl && (
                       <span className="rounded bg-gray-200/20 px-2 py-1 text-xs text-white">
                         Preview
                       </span>
                     )}
-                    <span className="text-lg text-white/90">
+                    <span className="text-sm text-white/90 sm:text-base md:text-lg">
                       {featuredTrack.artist}
                     </span>
                   </div>
-                  <div className="mb-4 flex items-center gap-2">
+                  <div className="mb-3 flex items-center gap-2 sm:mb-4">
                     <a
                       href={featuredTrack.spotifyUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm text-white transition-all hover:bg-white/20"
+                      className="flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 text-xs text-white transition-all hover:bg-white/20 sm:px-4 sm:py-2 sm:text-sm"
                     >
-                      <ExternalLink className="h-4 w-4" />
-                      <span>Open in Spotify</span>
+                      <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4" />
+                      <span className="hidden sm:inline">Open in Spotify</span>
+                      <span className="sm:hidden">Open</span>
                     </a>
                   </div>
-                  <div className="flex items-center gap-4">
+                  <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
                     {featuredTrack.previewUrl && (
                       <audio
                         controls
-                        className="h-8 w-32"
+                        className="h-7 w-24 sm:h-8 sm:w-32"
                         src={featuredTrack.previewUrl}
                       />
                     )}
@@ -347,9 +348,9 @@ export default function SpotifySection() {
                       href={featuredTrack.spotifyUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-[#1DB954] transition-all hover:scale-110"
+                      className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#1DB954] transition-all hover:scale-110 sm:h-12 sm:w-12"
                     >
-                      <Play className="ml-1 h-6 w-6 fill-current" />
+                      <Play className="ml-0.5 h-5 w-5 fill-current sm:ml-1 sm:h-6 sm:w-6" />
                     </a>
                   </div>
                 </div>
@@ -365,13 +366,13 @@ export default function SpotifySection() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
-                  className={`group relative overflow-hidden rounded-xl ${cardColors[index]} p-4`}
+                  className={`group relative overflow-hidden rounded-xl ${cardColors[index]} p-3 sm:p-4`}
                 >
-                  <div className="absolute right-3 top-3 z-10 text-white opacity-70">
+                  <div className="absolute right-2 top-2 z-10 text-white opacity-70 sm:right-3 sm:top-3">
                     <SpotifyIcon />
                   </div>
-                  <div className="flex items-center gap-4">
-                    <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-gray-700">
+                  <div className="flex items-center gap-2 sm:gap-4">
+                    <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-gray-700 sm:h-16 sm:w-16">
                       <Image
                         src={track.albumArt}
                         alt={`${track.title} by ${track.artist}`}
@@ -381,26 +382,26 @@ export default function SpotifySection() {
                       />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h4 className="mb-1 truncate font-semibold text-white">
+                      <h4 className="mb-0.5 truncate text-sm font-semibold text-white sm:mb-1 sm:text-base">
                         {track.title}
                       </h4>
-                      <p className="mb-1 truncate text-sm text-white/80">
+                      <p className="mb-1 truncate text-xs text-white/80 sm:text-sm">
                         {track.artist}
                       </p>
                       {track.previewUrl && (
-                        <span className="inline-block rounded bg-black/20 px-2 py-0.5 text-xs text-white">
+                        <span className="inline-block rounded bg-black/20 px-1.5 py-0.5 text-[10px] text-white sm:px-2 sm:text-xs">
                           Preview
                         </span>
                       )}
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5 sm:gap-2">
                       <a
                         href={track.spotifyUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white transition-all hover:bg-white/20"
+                        className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-white transition-all hover:bg-white/20 sm:h-8 sm:w-8"
                       >
-                        <Play className="ml-0.5 h-4 w-4 fill-current" />
+                        <Play className="ml-0.5 h-3 w-3 fill-current sm:h-4 sm:w-4" />
                       </a>
                     </div>
                   </div>

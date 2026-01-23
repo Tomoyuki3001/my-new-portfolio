@@ -39,8 +39,8 @@ export default function AboutHero() {
   return (
     <>
       <PageHero title="About Me" />
-      <section className="mx-auto max-w-[1100px] px-12 pb-16 md:px-20 lg:px-24">
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+      <section className="mx-auto max-w-[1100px] px-4 pb-12 sm:px-8 sm:pb-16 md:px-12 lg:px-20 xl:px-24">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
           {photos.map((photo, index) => (
             <motion.div
               key={photo.id}
@@ -60,7 +60,7 @@ export default function AboutHero() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
               </div>
-              <p className="mt-2 text-center text-sm font-medium text-gray-700">
+              <p className="mt-2 text-center text-xs font-medium text-gray-700 sm:text-sm">
                 {photo.description}
               </p>
             </motion.div>
