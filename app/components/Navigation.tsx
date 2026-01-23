@@ -7,15 +7,12 @@ export default function Navigation() {
   const pathname = usePathname();
 
   return (
-    <header className="mx-auto max-w-[1200px] border-b border-[#E5E5E5] px-6 py-6 md:px-8">
+    <header className="mx-auto max-w-[1100px] px-12 py-6 md:px-20 lg:px-24">
       <nav className="flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E5E5E5] bg-white font-serif text-lg font-semibold text-[#1a1a1a]">
             TF
           </div>
-          <h1 className="font-serif text-xl font-semibold text-[#1a1a1a] md:text-2xl">
-            TOMOYUKI FUJII
-          </h1>
         </Link>
         <div className="flex gap-8 text-sm font-medium uppercase tracking-wider text-[#666]">
           <Link

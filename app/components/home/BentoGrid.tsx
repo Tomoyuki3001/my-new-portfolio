@@ -8,7 +8,7 @@ import BlogPostsCard from "./BlogPostsCard";
 
 export default function BentoGrid() {
   return (
-    <section id="work" className="mx-auto max-w-[1200px] px-6 pb-24 md:px-8">
+    <section id="work" className="mx-auto max-w-[1100px] px-12 pb-24 md:px-20 lg:px-24">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         <ProjectCard />
         <TennisExperienceCard />

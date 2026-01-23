@@ -22,7 +22,7 @@ export default function ContactInfo() {
             </p>
             <a
               href="mailto:contact@example.com"
-              className="text-[#1a1a1a] transition-colors hover:text-[#3B82F6]"
+              className="text-[#1a1a1a] transition-colors hover:text-[#bcff4f]"
             >
               contact@example.com
             </a>
@@ -43,19 +43,19 @@ export default function ContactInfo() {
         <div className="flex flex-col gap-3">
           <a
             href="#"
-            className="text-[#666] transition-colors hover:text-[#3B82F6]"
+            className="text-[#666] transition-colors hover:text-[#bcff4f]"
           >
             LinkedIn
           </a>
           <a
             href="#"
-            className="text-[#666] transition-colors hover:text-[#3B82F6]"
+            className="text-[#666] transition-colors hover:text-[#bcff4f]"
           >
             GitHub
           </a>
           <a
             href="#"
-            className="text-[#666] transition-colors hover:text-[#3B82F6]"
+            className="text-[#666] transition-colors hover:text-[#bcff4f]"
           >
             Twitter
           </a>

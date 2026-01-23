@@ -12,14 +12,14 @@ export default function TennisExperienceCard() {
       className="group relative overflow-hidden rounded-lg border border-[#E5E5E5] bg-white p-6 md:p-8"
     >
       <div className="mb-4">
-        <span className="font-serif text-4xl font-bold text-[#3B82F6] md:text-5xl">
+        <span className="font-serif text-4xl font-bold text-[#bcff4f] md:text-5xl">
           10+
         </span>
       </div>
-      <p className="text-sm font-medium uppercase tracking-wider text-[#3B82F6]">
+      <p className="text-sm font-medium uppercase tracking-wider text-[#bcff4f]">
         Years in
       </p>
-      <p className="text-sm font-medium uppercase tracking-wider text-[#3B82F6]">
+      <p className="text-sm font-medium uppercase tracking-wider text-[#bcff4f]">
         Tennis Industry
       </p>
     </motion.div>

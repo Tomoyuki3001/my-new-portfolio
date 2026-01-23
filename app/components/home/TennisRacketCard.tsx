@@ -18,7 +18,7 @@ export default function TennisRacketCard({ delay = 0.2 }: TennisRacketCardProps)
       <div className="flex h-full items-center justify-center">
         <svg
           viewBox="0 0 100 120"
-          className="h-24 w-24 text-[#3B82F6]"
+          className="h-24 w-24 text-[#bcff4f]"
           fill="none"
           stroke="currentColor"
           strokeWidth="1.5"

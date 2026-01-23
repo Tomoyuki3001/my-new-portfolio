@@ -24,10 +24,10 @@ export default function BlogPostsCard() {
       <div className="space-y-4">
         {blogPosts.map((post, index) => (
           <div key={index} className="flex items-start gap-3">
-            <div className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#3B82F6]"></div>
+            <div className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#bcff4f]"></div>
             <a
               href="#"
-              className="text-sm text-[#1a1a1a] transition-colors hover:text-[#3B82F6]"
+              className="text-sm text-[#1a1a1a] transition-colors hover:text-[#bcff4f]"
             >
               {post}
             </a>

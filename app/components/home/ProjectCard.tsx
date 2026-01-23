@@ -21,7 +21,7 @@ export default function ProjectCard() {
               TENNIS GUIDE
             </h2>
           </div>
-          <button className="w-fit rounded-full bg-[#3B82F6] px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white transition-all hover:bg-[#2563EB]">
+          <button className="w-fit rounded-full bg-[#bcff4f] px-6 py-3 text-sm font-semibold uppercase tracking-wider text-[#1a1a1a] transition-all hover:bg-[#bcff4f]/90">
             View Project
           </button>
         </div>

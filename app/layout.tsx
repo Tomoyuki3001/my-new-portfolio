@@ -14,7 +14,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Portfolio",
+  title: "Tomoyuki Fujii",
   description: "High-end portfolio landing page",
 };
 

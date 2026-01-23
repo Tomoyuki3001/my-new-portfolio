@@ -26,7 +26,7 @@ export default function ContactForm() {
             type="text"
             id="name"
             name="name"
-            className="w-full rounded-lg border border-[#E5E5E5] bg-[#F9F9F9] px-4 py-3 text-[#1a1a1a] transition-colors focus:border-[#3B82F6] focus:outline-none"
+            className="w-full rounded-lg border border-[#E5E5E5] bg-[#F9F9F9] px-4 py-3 text-[#1a1a1a] transition-colors focus:border-[#bcff4f] focus:outline-none"
             placeholder="Your name"
           />
         </div>
@@ -41,7 +41,7 @@ export default function ContactForm() {
             type="email"
             id="email"
             name="email"
-            className="w-full rounded-lg border border-[#E5E5E5] bg-[#F9F9F9] px-4 py-3 text-[#1a1a1a] transition-colors focus:border-[#3B82F6] focus:outline-none"
+            className="w-full rounded-lg border border-[#E5E5E5] bg-[#F9F9F9] px-4 py-3 text-[#1a1a1a] transition-colors focus:border-[#bcff4f] focus:outline-none"
             placeholder="your.email@example.com"
           />
         </div>
@@ -56,13 +56,13 @@ export default function ContactForm() {
             id="message"
             name="message"
             rows={6}
-            className="w-full rounded-lg border border-[#E5E5E5] bg-[#F9F9F9] px-4 py-3 text-[#1a1a1a] transition-colors focus:border-[#3B82F6] focus:outline-none"
+            className="w-full rounded-lg border border-[#E5E5E5] bg-[#F9F9F9] px-4 py-3 text-[#1a1a1a] transition-colors focus:border-[#bcff4f] focus:outline-none"
             placeholder="Your message..."
           ></textarea>
         </div>
         <button
           type="submit"
-          className="w-full rounded-full bg-[#3B82F6] px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white transition-all hover:bg-[#2563EB]"
+          className="w-full rounded-full bg-[#bcff4f] px-6 py-3 text-sm font-semibold uppercase tracking-wider text-[#1a1a1a] transition-all hover:bg-[#bcff4f]/90"
         >
           Send Message
         </button>
