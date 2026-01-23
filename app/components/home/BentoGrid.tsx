@@ -2,19 +2,16 @@
 
 import { motion } from "framer-motion";
 import ProjectCard from "./ProjectCard";
-import TennisExperienceCard from "./TennisExperienceCard";
-import TennisRacketCard from "./TennisRacketCard";
-import BlogPostsCard from "./BlogPostsCard";
+import AboutMeCard from "./AboutMeCard";
+import IntroductionCard from "./IntroductionCard";
 
 export default function BentoGrid() {
   return (
     <section id="work" className="mx-auto max-w-[1100px] px-12 pb-24 md:px-20 lg:px-24">
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4">
+        <IntroductionCard />
         <ProjectCard />
-        <TennisExperienceCard />
-        <TennisRacketCard delay={0.2} />
-        <TennisRacketCard delay={0.3} />
-        <BlogPostsCard />
+        <AboutMeCard delay={0.2} />
       </div>
     </section>
   );

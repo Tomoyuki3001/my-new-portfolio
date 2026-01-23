@@ -5,12 +5,10 @@ export default function HeroSection() {
     <PageHero
       title={
         <>
-          FROM THE COURT
-          <br />
-          TO THE CODE
+          Hello, I'm Tomo
         </>
       }
-      subtitle="A tennis lover turned software developer, bringing passion and precision to make positive impact on the tennis industy for future generations"
+      subtitle="from the court to the code"
       className="md:py-16 lg:px-24"
     />
   );
