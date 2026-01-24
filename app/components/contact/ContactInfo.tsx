@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Mail, Linkedin, Github, MapPin, Music, Facebook } from "lucide-react";
+import { Mail, Linkedin, Github, Music, Facebook, FileText } from "lucide-react";
 
 interface ContactCard {
   icon: React.ReactNode;
@@ -43,10 +43,10 @@ export default function ContactInfo() {
       href: "https://open.spotify.com/user/tmyk0130?si=9a8d1d3c89b14b32",
     },
     {
-      icon: <MapPin size={24} color="#1A1A1A" strokeWidth={1.5} />,
-      platform: "Location",
-      identifier: "Tokyo, Japan",
-      href: "https://www.google.com/maps/place/Tokyo,+Japan",
+      icon: <FileText size={24} color="#1A1A1A" strokeWidth={1.5} />,
+      platform: "Strava",
+      identifier: "Tomoyuki Fujii",
+      href: "https://www.strava.com/athletes/157193350",
     },
   ];
 
