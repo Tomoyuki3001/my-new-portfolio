@@ -8,8 +8,8 @@ export default function Navigation() {
   const pathname = usePathname();
 
   return (
-    <header className="mx-auto max-w-[1100px] px-12 py-6 md:px-20 lg:px-24">
-      <nav className="flex items-center justify-between">
+    <header className="w-full mx-auto max-w-[1100px] px-4 py-6 sm:px-8 md:px-12 lg:px-20 xl:px-24">
+      <nav className="flex w-full items-center justify-between">
         <Link href="/" className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E5E5E5] bg-white">
             <Image

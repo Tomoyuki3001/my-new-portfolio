@@ -7,9 +7,11 @@ interface PageLayoutProps {
 
 export default function PageLayout({ children }: PageLayoutProps) {
   return (
-    <div className="min-h-screen bg-[#F9F9F9]">
+    <div className="min-h-screen bg-[#F9F9F9] flex flex-col">
       <Navigation />
-      {children}
+      <main className="flex-1">
+        {children}
+      </main>
       <Footer />
     </div>
   );

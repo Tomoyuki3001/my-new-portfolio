@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Mail, Linkedin, Github, MapPin } from "lucide-react";
+import { Mail, Linkedin, Github, MapPin, Music, Facebook } from "lucide-react";
 
 interface ContactCard {
   icon: React.ReactNode;
@@ -29,6 +29,18 @@ export default function ContactInfo() {
       platform: "GitHub",
       identifier: "Tomoyuki3001",
       href: "https://github.com/Tomoyuki3001",
+    },
+    {
+      icon: <Facebook size={24} color="#1A1A1A" strokeWidth={1.5} />,
+      platform: "Facebook",
+      identifier: "Tomoyuki Fujii",
+      href: "https://www.facebook.com/tomoyk113",
+    },
+    {
+      icon: <Music size={24} color="#1A1A1A" strokeWidth={1.5} />,
+      platform: "Spotify",
+      identifier: "Tomoyuki Fujii",
+      href: "https://open.spotify.com/user/tmyk0130?si=9a8d1d3c89b14b32",
     },
     {
       icon: <MapPin size={24} color="#1A1A1A" strokeWidth={1.5} />,
