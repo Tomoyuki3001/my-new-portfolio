@@ -6,14 +6,6 @@ let cachedAccessToken: string | null = null;
 let tokenExpiresAt: number = 0;
 
 export async function getValidAccessToken(): Promise<string> {
-  // Debug: Log if credentials exist (not the actual values!)
-  console.log("Strava credentials check:", {
-    hasClientId: !!STRAVA_CLIENT_ID,
-    hasClientSecret: !!STRAVA_CLIENT_SECRET,
-    hasRefreshToken: !!STRAVA_REFRESH_TOKEN,
-    refreshTokenLength: STRAVA_REFRESH_TOKEN?.length || 0,
-  });
-
   if (!STRAVA_CLIENT_ID || !STRAVA_CLIENT_SECRET || !STRAVA_REFRESH_TOKEN) {
     throw new Error("Strava credentials not configured in .env");
   }
@@ -21,11 +13,8 @@ export async function getValidAccessToken(): Promise<string> {
   const now = Math.floor(Date.now() / 1000);
 
   if (cachedAccessToken && tokenExpiresAt > now + 60) {
-    console.log("Using cached Strava access token");
     return cachedAccessToken;
   }
-
-  console.log("Refreshing Strava access token...");
 
   const response = await fetch("https://www.strava.com/oauth/token", {
     method: "POST",
@@ -42,25 +31,14 @@ export async function getValidAccessToken(): Promise<string> {
 
   const data = await response.json();
 
-  console.log("Token refresh response:", {
-    ok: response.ok,
-    status: response.status,
-    hasAccessToken: !!data.access_token,
-    expiresAt: data.expires_at,
-    error: data.message || data.errors,
-  });
-
   if (!response.ok) {
-    console.error("Failed to refresh token:", data);
     throw new Error(data.message || "Failed to refresh Strava token");
   }
 
   cachedAccessToken = data.access_token;
   tokenExpiresAt = data.expires_at;
 
-  console.log("Strava token refreshed, expires at:", new Date(tokenExpiresAt * 1000).toLocaleString());
-
-  return cachedAccessToken;
+  return data.access_token;
 }
 
 export async function stravaFetch<T>(
@@ -68,12 +46,6 @@ export async function stravaFetch<T>(
   options: RequestInit = {}
 ): Promise<T> {
   const accessToken = await getValidAccessToken();
-
-  // Debug: Log the token being used (first 10 chars only for security)
-  console.log("Making Strava API call:", {
-    endpoint,
-    tokenPreview: accessToken?.substring(0, 10) + "...",
-  });
 
   const response = await fetch(`https://www.strava.com/api/v3${endpoint}`, {
     ...options,
