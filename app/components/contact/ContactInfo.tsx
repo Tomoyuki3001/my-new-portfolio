@@ -13,16 +13,16 @@ interface ContactCard {
 export default function ContactInfo() {
   const contactCards: ContactCard[] = [
     {
-      icon: <Mail size={24} color="#1A1A1A" strokeWidth={1.5} />,
-      platform: "Email",
-      identifier: "mjr013008@gmail.com",
-      href: "mailto:mjr013008@gmail.com",
-    },
-    {
       icon: <Linkedin size={24} color="#1A1A1A" strokeWidth={1.5} />,
       platform: "LinkedIn",
       identifier: "in/tomoyuki-fujii",
       href: "https://www.linkedin.com/in/tomoyuki-fujii",
+    },
+    {
+      icon: <Mail size={24} color="#1A1A1A" strokeWidth={1.5} />,
+      platform: "Email",
+      identifier: "mjr013008@gmail.com",
+      href: "mailto:mjr013008@gmail.com",
     },
     {
       icon: <Github size={24} color="#1A1A1A" strokeWidth={1.5} />,
