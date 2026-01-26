@@ -17,10 +17,6 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 
-// ============================================
-// Types
-// ============================================
-
 interface Track {
   id: string;
   title: string;
@@ -45,10 +41,6 @@ interface Activity {
   averagePace: string;
   polyline: string | null;
 }
-
-// ============================================
-// Demo Data
-// ============================================
 
 const demoTracks: Track[] = [
   {
@@ -166,10 +158,6 @@ const demoActivities: Activity[] = [
   },
 ];
 
-// ============================================
-// Icons
-// ============================================
-
 const SpotifyIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6">
     <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.559.3z" />
@@ -181,10 +169,6 @@ const StravaIcon = () => (
     <path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169" />
   </svg>
 );
-
-// ============================================
-// Helper Functions
-// ============================================
 
 function decodePolyline(encoded: string): [number, number][] {
   const points: [number, number][] = [];
@@ -295,10 +279,6 @@ function hasDistanceData(type: string): boolean {
   return distanceActivities.includes(type);
 }
 
-// ============================================
-// Main Component
-// ============================================
-
 export default function RecentActivitySection() {
   const [activeTab, setActiveTab] = useState<"spotify" | "strava">("strava");
   const [tracks, setTracks] = useState<Track[]>([]);
@@ -308,7 +288,6 @@ export default function RecentActivitySection() {
   const spotifyCardColors = ["bg-[#8B1538]", "bg-[#8B1538]", "bg-[#2a2a2a]", "bg-[#2a2a2a]"];
   const stravaCardColors = ["bg-[#2D5A4A]", "bg-[#3D6B5A]", "bg-[#2a2a2a]", "bg-[#2a2a2a]"];
 
-  // Fetch Spotify tracks
   useEffect(() => {
     const fetchTracks = async () => {
       try {
@@ -326,7 +305,6 @@ export default function RecentActivitySection() {
     fetchTracks();
   }, []);
 
-  // Fetch Strava activities
   useEffect(() => {
     const fetchActivities = async () => {
       try {
@@ -364,14 +342,13 @@ export default function RecentActivitySection() {
           <h2 className="font-serif text-xl font-bold text-[#1a1a1a] sm:text-2xl md:text-3xl">
             Life in Motion
           </h2>
-          <div className="flex gap-2">
+          {/* <div className="flex gap-2">
             <button
               onClick={() => setActiveTab("strava")}
-              className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium transition-all sm:px-4 sm:py-2 sm:text-sm ${
-                activeTab === "strava"
-                  ? "bg-[#FC4C02] text-white"
-                  : "text-gray-600 hover:text-[#1a1a1a]"
-              }`}
+              className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium transition-all sm:px-4 sm:py-2 sm:text-sm ${activeTab === "strava"
+                ? "bg-[#FC4C02] text-white"
+                : "text-gray-600 hover:text-[#1a1a1a]"
+                }`}
             >
               <StravaIcon />
               <span className="hidden sm:inline">Activity Pulse</span>
@@ -379,17 +356,16 @@ export default function RecentActivitySection() {
             </button>
             <button
               onClick={() => setActiveTab("spotify")}
-              className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium transition-all sm:px-4 sm:py-2 sm:text-sm ${
-                activeTab === "spotify"
+              className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium transition-all sm:px-4 sm:py-2 sm:text-sm ${activeTab === "spotify"
                   ? "bg-[#1DB954] text-white"
                   : "text-gray-600 hover:text-[#1a1a1a]"
-              }`}
+                }`}
             >
               <SpotifyIcon />
               <span className="hidden sm:inline">Recently Played</span>
               <span className="sm:hidden">Music</span>
             </button>
-          </div>
+          </div> */}
         </div>
 
         {/* Loading State */}
@@ -397,9 +373,8 @@ export default function RecentActivitySection() {
           <div className="flex items-center justify-center rounded-2xl border border-[#E5E5E5] bg-white p-8 sm:p-12">
             <div className="text-center">
               <div
-                className={`mb-4 inline-block h-6 w-6 animate-spin rounded-full border-4 border-t-transparent sm:h-8 sm:w-8 ${
-                  activeTab === "spotify" ? "border-[#1DB954]" : "border-[#FC4C02]"
-                }`}
+                className={`mb-4 inline-block h-6 w-6 animate-spin rounded-full border-4 border-t-transparent sm:h-8 sm:w-8 ${activeTab === "spotify" ? "border-[#1DB954]" : "border-[#FC4C02]"
+                  }`}
               ></div>
               <p className="text-sm text-gray-600 sm:text-base">Loading...</p>
             </div>
