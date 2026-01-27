@@ -337,7 +337,6 @@ export default function RecentActivitySection() {
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
-        {/* Header with Tabs */}
         <div className="mb-6 flex flex-col gap-4 sm:mb-8 sm:flex-row sm:justify-between">
           <h2 className="font-serif text-xl font-bold text-[#1a1a1a] sm:text-2xl md:text-3xl">
             Life in Motion
@@ -368,7 +367,6 @@ export default function RecentActivitySection() {
           </div> */}
         </div>
 
-        {/* Loading State */}
         {isLoading ? (
           <div className="flex items-center justify-center rounded-2xl border border-[#E5E5E5] bg-white p-8 sm:p-12">
             <div className="text-center">
@@ -380,11 +378,8 @@ export default function RecentActivitySection() {
             </div>
           </div>
         ) : activeTab === "spotify" ? (
-          /* ============================================ */
-          /* Spotify Content */
-          /* ============================================ */
+          // Spotify Content
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-            {/* Featured Track */}
             {featuredTrack && (
               <motion.div
                 key="spotify-featured"
@@ -435,7 +430,7 @@ export default function RecentActivitySection() {
               </motion.div>
             )}
 
-            {/* Track List */}
+            {/* Track list */}
             <div className="flex flex-col gap-4">
               {listTracks.map((track, index) => (
                 <motion.a
@@ -478,11 +473,8 @@ export default function RecentActivitySection() {
             </div>
           </div>
         ) : (
-          /* ============================================ */
-          /* Strava Content */
-          /* ============================================ */
+          // Strava Content
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-            {/* Featured Activity */}
             {featuredActivity && (
               <motion.div
                 key="strava-featured"
@@ -537,7 +529,7 @@ export default function RecentActivitySection() {
                 {/* Activity Details */}
                 <div className="space-y-3">
                   <div>
-                    <p className="text-xs text-[#1a1a1a]/70 sm:text-sm">Latest Activity</p>
+                    <p className="text-xs text-[#1a1a1a]/70 sm:text-sm">{formatDate(featuredActivity.startDate)}</p>
                     <h3 className="text-lg font-bold text-[#1a1a1a] sm:text-xl md:text-2xl">
                       {featuredActivity.name}
                     </h3>
