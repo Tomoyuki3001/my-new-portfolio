@@ -33,19 +33,22 @@ export default function ProjectsSection() {
     {
       title: "Workout Tracker",
       link: "https://github.com/Tomoyuki3001/workout-record",
-      description: "A workout tracker that allows users to track their workouts and progress. I didn't want to use a pen and notebook at a gym, so I created this app.",
+      description:
+        "A workout tracker that allows users to track their workouts and progress. I didn't want to use a pen and notebook at a gym, so I created this app.",
       technologies: ["React", "Express.js", "Node.js", "MongoDB"],
     },
     {
       title: "Health Management Dashboard",
       link: "https://github.com/Tomoyuki3001/mern-health",
-      description: "A health management dashboard to book appointments with doctors. Learned about basic MERN application flow and database management.",
+      description:
+        "A health management dashboard to book appointments with doctors. Learned about basic MERN application flow and database management.",
       technologies: ["React", "Express.js", "Node.js", "MongoDB"],
     },
     {
       title: "Chat App",
       link: "https://github.com/Tomoyuki3001/mern-chat",
-      description: "A chat app that allows users to chat with each other. I wanted to use this app with my ex, but... lol",
+      description:
+        "A chat app that allows users to chat with each other. I wanted to use this app with someone special, but... lol",
       technologies: ["Next.js", "Prisma", "MongoDB"],
     },
   ];
@@ -78,13 +81,21 @@ export default function ProjectsSection() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5, ease: "easeOut", delay: index * 0.1 }}
+              transition={{
+                duration: 0.5,
+                ease: "easeOut",
+                delay: index * 0.1,
+              }}
               className="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-6 md:gap-8"
             >
               {/* Project Info */}
               <div className="flex-1 min-w-0">
                 <h3 className="text-base font-semibold text-[#1a1a1a] transition-colors hover:text-[#bcff4f] sm:text-base md:text-lg">
-                  <a href={project.link} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     {project.title}
                   </a>
                 </h3>

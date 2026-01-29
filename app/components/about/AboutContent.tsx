@@ -16,22 +16,23 @@ export default function AboutContent() {
   const timelineEntries: TimelineEntry[] = [
     {
       organization: "BizReach Inc.",
-      role: "Software Developer",
-      description: "Working on internal AI applications",
+      role: "Software Engineer",
+      description: "Platform engineering and AI applications",
       period: "2026 - Now",
       color: "bg-blue-500",
     },
     {
       organization: "CONNECT Inc.",
       role: "Software Developer",
-      description: "Worked on a healthcare application for the elderly",
+      description: "Worked on a healthcare application",
       period: "2024 - 2025",
       color: "bg-[#bcff4f]",
     },
     {
-      organization: "Study Abroad and Work in Canada",
+      organization: "Study Abroad and Work in Vancouver, Canada",
       role: "",
-      description: "Studied at Cornerstone Community College and worked a couple of jobs",
+      description:
+        "Studied at Cornerstone Community College and worked at a couple of jobs",
       period: "2021 - 2024",
       color: "bg-green-500",
     },
@@ -68,7 +69,11 @@ export default function AboutContent() {
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, amount: 0.3 }}
-                  transition={{ duration: 0.5, ease: "easeOut", delay: index * 0.1 }}
+                  transition={{
+                    duration: 0.5,
+                    ease: "easeOut",
+                    delay: index * 0.1,
+                  }}
                   className="relative flex items-start gap-4 sm:gap-6"
                 >
                   {/* Colored Marker */}
@@ -94,7 +99,9 @@ export default function AboutContent() {
                         </p>
                       </div>
                       <div className="flex-shrink-0">
-                        <p className="text-xs text-[#1a1a1a] sm:text-sm">{entry.period}</p>
+                        <p className="text-xs text-[#1a1a1a] sm:text-sm">
+                          {entry.period}
+                        </p>
                       </div>
                     </div>
                   </div>
