@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 interface Project {
   title: string;
   link: string;
-  description: string;
+  description: string | React.ReactNode;
   technologies: string[];
 }
 
@@ -45,11 +45,25 @@ export default function ProjectsSection() {
       technologies: ["React", "Express.js", "Node.js", "MongoDB"],
     },
     {
-      title: "Chat App",
-      link: "https://github.com/Tomoyuki3001/mern-chat",
-      description:
-        "A chat app that allows users to chat with each other. I wanted to use this app with someone special, but... lol",
-      technologies: ["Next.js", "Prisma", "MongoDB"],
+      title: "Scheduler App",
+      link: "https://github.com/Tomoyuki3001/my-scheduler-app",
+      description: (
+        <>
+          A scheduler app that allows users to create an event, and make a
+          booking. I&apos;m still working on updating some features, and I was
+          inspired by{" "}
+          <a
+            href="https://www.tennisbear.net/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#1a1a1a] underline transition-colors hover:text-[#bcff4f]"
+          >
+            Tennis Bear
+          </a>
+          .
+        </>
+      ),
+      technologies: ["Next.js", "TypeScript", "Express.js", "MongoDB"],
     },
   ];
 
@@ -109,7 +123,9 @@ export default function ProjectsSection() {
                 {project.technologies.map((tech, techIndex) => (
                   <span
                     key={techIndex}
-                    className={`rounded-full px-2 py-0.5 text-[10px] font-medium text-white sm:px-3 sm:py-1 sm:text-xs ${getTagColor(tech)}`}
+                    className={`rounded-full px-2 py-0.5 text-[10px] font-medium text-white sm:px-3 sm:py-1 sm:text-xs ${getTagColor(
+                      tech
+                    )}`}
                   >
                     {tech}
                   </span>
