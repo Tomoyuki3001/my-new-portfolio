@@ -154,7 +154,7 @@ function polylineToSvgPath(
   polyline: string,
   width: number,
   height: number,
-  padding: number = 20
+  padding: number = 20,
 ): string {
   const points = decodePolyline(polyline);
   if (points.length === 0) return "";
@@ -172,7 +172,7 @@ function polylineToSvgPath(
 
   const scale = Math.min(
     (width - padding * 2) / lngRange,
-    (height - padding * 2) / latRange
+    (height - padding * 2) / latRange,
   );
 
   const svgPoints = points.map((p) => {
@@ -232,7 +232,9 @@ export default function ActivityPulseSection() {
         setActivities(data.activities || []);
       } catch (err) {
         console.error("Error fetching activities:", err);
-        setError(err instanceof Error ? err.message : "Failed to load activities");
+        setError(
+          err instanceof Error ? err.message : "Failed to load activities",
+        );
         setActivities(demoActivities);
       } finally {
         setIsLoading(false);
@@ -274,12 +276,16 @@ export default function ActivityPulseSection() {
           <div className="flex items-center justify-center rounded-2xl border border-[#E5E5E5] bg-white p-8 sm:p-12">
             <div className="text-center">
               <div className="mb-4 inline-block h-6 w-6 animate-spin rounded-full border-4 border-[#FC4C02] border-t-transparent sm:h-8 sm:w-8"></div>
-              <p className="text-sm text-gray-600 sm:text-base">Loading activities...</p>
+              <p className="text-sm text-gray-600 sm:text-base">
+                Loading activities...
+              </p>
             </div>
           </div>
         ) : activities.length === 0 ? (
           <div className="flex items-center justify-center rounded-2xl border border-[#E5E5E5] bg-white p-8 sm:p-12">
-            <p className="text-sm text-gray-600 sm:text-base">No activities found.</p>
+            <p className="text-sm text-gray-600 sm:text-base">
+              No activities found.
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -314,7 +320,11 @@ export default function ActivityPulseSection() {
                       preserveAspectRatio="xMidYMid meet"
                     >
                       <path
-                        d={polylineToSvgPath(featuredActivity.polyline, 300, 200)}
+                        d={polylineToSvgPath(
+                          featuredActivity.polyline,
+                          300,
+                          200,
+                        )}
                         fill="none"
                         stroke="#1a1a1a"
                         strokeWidth="2"
@@ -401,7 +411,9 @@ export default function ActivityPulseSection() {
                         {activity.name}
                       </h4>
                       <div className="flex items-center gap-3 text-xs text-white/80 sm:text-sm">
-                        <span className="font-medium">{activity.distanceKm} km</span>
+                        <span className="font-medium">
+                          {activity.distanceKm} km
+                        </span>
                         <span>{activity.movingTimeFormatted}</span>
                       </div>
                       <p className="mt-1 text-xs text-white/60">

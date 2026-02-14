@@ -5,7 +5,7 @@ import Image from "next/image";
 import PageHero from "../PageHero";
 import eating from "@/public/eat.jpg";
 import running from "@/public/run.jpg";
-import triathlon from "@/public/triathlon.jpg";
+import hiroshima from "@/public/hiroshima.jpg";
 import hollywood from "@/public/hollywood.jpg";
 
 const photos = [
@@ -25,13 +25,13 @@ const photos = [
     id: 3,
     src: hollywood,
     alt: "Photo 3",
-    description: "First time in the US",
+    description: "In Hollywood",
   },
   {
     id: 4,
-    src: triathlon,
+    src: hiroshima,
     alt: "Photo 4",
-    description: "Yokohama triathlon",
+    description: "In Hiroshima",
   },
 ];
 
@@ -47,7 +47,11 @@ export default function AboutHero() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5, ease: "easeOut", delay: index * 0.1 }}
+              transition={{
+                duration: 0.5,
+                ease: "easeOut",
+                delay: index * 0.1,
+              }}
               className="group relative overflow-hidden rounded-lg"
             >
               <div className="relative aspect-square overflow-hidden rounded-lg border border-[#E5E5E5] bg-gray-100">
