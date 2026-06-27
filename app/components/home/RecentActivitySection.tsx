@@ -42,44 +42,6 @@ interface Activity {
   polyline: string | null;
 }
 
-const demoTracks: Track[] = [
-  {
-    id: "demo-1",
-    title: "Hard to Sleep",
-    artist: "Gracie Abrams",
-    albumArt: "https://i.scdn.co/image/ab67616d0000b273c5649add07ed3720be9d5526",
-    spotifyUrl: "https://open.spotify.com/track/demo1",
-  },
-  {
-    id: "demo-2",
-    title: "For Tonight",
-    artist: "GIVĒON",
-    albumArt: "https://i.scdn.co/image/ab67616d0000b273c5649add07ed3720be9d5526",
-    spotifyUrl: "https://open.spotify.com/track/demo2",
-  },
-  {
-    id: "demo-3",
-    title: "I Don't Want You Back",
-    artist: "AJ Mitchell",
-    albumArt: "https://i.scdn.co/image/ab67616d0000b273c5649add07ed3720be9d5526",
-    spotifyUrl: "https://open.spotify.com/track/demo3",
-  },
-  {
-    id: "demo-4",
-    title: "Giving Up Ground",
-    artist: "Chelsea Cutler, Quinn XCII",
-    albumArt: "https://i.scdn.co/image/ab67616d0000b273c5649add07ed3720be9d5526",
-    spotifyUrl: "https://open.spotify.com/track/demo4",
-  },
-  {
-    id: "demo-5",
-    title: "When love becomes goodbye",
-    artist: "BOL4",
-    albumArt: "https://i.scdn.co/image/ab67616d0000b273c5649add07ed3720be9d5526",
-    spotifyUrl: "https://open.spotify.com/track/demo5",
-  },
-];
-
 const demoActivities: Activity[] = [
   {
     id: 1,
@@ -212,7 +174,7 @@ function polylineToSvgPath(
   polyline: string,
   width: number,
   height: number,
-  padding: number = 20
+  padding: number = 20,
 ): string {
   const points = decodePolyline(polyline);
   if (points.length === 0) return "";
@@ -230,7 +192,7 @@ function polylineToSvgPath(
 
   const scale = Math.min(
     (width - padding * 2) / lngRange,
-    (height - padding * 2) / latRange
+    (height - padding * 2) / latRange,
   );
 
   const svgPoints = points.map((p) => {
@@ -251,7 +213,13 @@ function formatDate(dateString: string): string {
   });
 }
 
-function ActivityIcon({ type, className = "h-6 w-6" }: { type: string; className?: string }) {
+function ActivityIcon({
+  type,
+  className = "h-6 w-6",
+}: {
+  type: string;
+  className?: string;
+}) {
   const iconMap: Record<string, React.ReactNode> = {
     Run: <Footprints className={className} />,
     Ride: <Bike className={className} />,
@@ -270,8 +238,14 @@ function isRunActivity(type: string): boolean {
 
 function hasDistanceData(type: string): boolean {
   const distanceActivities = [
-    "Run", "TrailRun", "VirtualRun",
-    "Ride", "VirtualRide", "MountainBikeRide", "GravelRide", "EBikeRide",
+    "Run",
+    "TrailRun",
+    "VirtualRun",
+    "Ride",
+    "VirtualRide",
+    "MountainBikeRide",
+    "GravelRide",
+    "EBikeRide",
     "Swim",
     "Walk",
     "Hike",
@@ -280,30 +254,87 @@ function hasDistanceData(type: string): boolean {
 }
 
 export default function RecentActivitySection() {
-  const [activeTab, setActiveTab] = useState<"spotify" | "strava">("strava");
+  const [activeTab, setActiveTab] = useState<"spotify" | "strava">("spotify");
+  const [spotifySubTab, setSpotifySubTab] = useState<"recently" | "top">("top");
   const [tracks, setTracks] = useState<Track[]>([]);
   const [activities, setActivities] = useState<Activity[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isStravaLoading, setIsStravaLoading] = useState(true);
+  const [isSpotifyLoading, setIsSpotifyLoading] = useState(true);
+  const [spotifyConfigured, setSpotifyConfigured] = useState(false);
+  const [spotifyAuthenticated, setSpotifyAuthenticated] = useState(false);
+  const [spotifyError, setSpotifyError] = useState<string | null>(null);
 
-  const spotifyCardColors = ["bg-[#8B1538]", "bg-[#8B1538]", "bg-[#2a2a2a]", "bg-[#2a2a2a]"];
-  const stravaCardColors = ["bg-[#2D5A4A]", "bg-[#3D6B5A]", "bg-[#2a2a2a]", "bg-[#2a2a2a]"];
+  const spotifyCardColors = [
+    "bg-[#8B1538]",
+    "bg-[#8B1538]",
+    "bg-[#2a2a2a]",
+    "bg-[#2a2a2a]",
+  ];
+  const stravaCardColors = [
+    "bg-[#2D5A4A]",
+    "bg-[#3D6B5A]",
+    "bg-[#2a2a2a]",
+    "bg-[#2a2a2a]",
+  ];
 
   useEffect(() => {
-    const fetchTracks = async () => {
+    const checkSpotifyStatus = async () => {
       try {
-        const response = await fetch("/api/spotify/tracks/recent");
+        const response = await fetch("/api/spotify/status");
         const data = await response.json();
-        if (response.ok && data.tracks) {
-          setTracks(data.tracks);
-        } else {
-          setTracks(demoTracks);
-        }
+        setSpotifyConfigured(data.configured);
+        setSpotifyAuthenticated(data.authenticated);
       } catch {
-        setTracks(demoTracks);
+        setSpotifyConfigured(false);
+        setSpotifyAuthenticated(false);
+      } finally {
+        setIsSpotifyLoading(false);
       }
     };
-    fetchTracks();
+    checkSpotifyStatus();
   }, []);
+
+  useEffect(() => {
+    if (!spotifyAuthenticated) {
+      setTracks([]);
+      return;
+    }
+
+    const fetchTracks = async () => {
+      setIsSpotifyLoading(true);
+      setSpotifyError(null);
+
+      try {
+        const endpoint =
+          spotifySubTab === "recently"
+            ? "/api/spotify/tracks/recent"
+            : "/api/spotify/tracks/top";
+
+        const response = await fetch(endpoint);
+        const data = await response.json();
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            setSpotifyAuthenticated(false);
+            setSpotifyError("Please reconnect your Spotify account.");
+          } else {
+            setSpotifyError(data.error || "Failed to fetch tracks");
+          }
+          setTracks([]);
+          return;
+        }
+
+        setTracks(data.tracks || []);
+      } catch {
+        setSpotifyError("Failed to load tracks. Please try again.");
+        setTracks([]);
+      } finally {
+        setIsSpotifyLoading(false);
+      }
+    };
+
+    fetchTracks();
+  }, [spotifyAuthenticated, spotifySubTab]);
 
   useEffect(() => {
     const fetchActivities = async () => {
@@ -318,11 +349,26 @@ export default function RecentActivitySection() {
       } catch {
         setActivities(demoActivities);
       } finally {
-        setIsLoading(false);
+        setIsStravaLoading(false);
       }
     };
     fetchActivities();
   }, []);
+
+  const handleConnectSpotify = async () => {
+    try {
+      const response = await fetch("/api/spotify/auth");
+      const data = await response.json();
+
+      if (data.authUrl) {
+        window.location.href = data.authUrl;
+      } else {
+        setSpotifyError(data.error || "Failed to initiate Spotify connection.");
+      }
+    } catch {
+      setSpotifyError("Failed to connect to Spotify. Please try again.");
+    }
+  };
 
   const featuredTrack = tracks[0];
   const listTracks = tracks.slice(1, 5);
@@ -341,137 +387,215 @@ export default function RecentActivitySection() {
           <h2 className="font-serif text-xl font-bold text-[#1a1a1a] sm:text-2xl md:text-3xl">
             Life in Motion
           </h2>
-          {/* <div className="flex gap-2">
-            <button
-              onClick={() => setActiveTab("strava")}
-              className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium transition-all sm:px-4 sm:py-2 sm:text-sm ${activeTab === "strava"
-                ? "bg-[#FC4C02] text-white"
-                : "text-gray-600 hover:text-[#1a1a1a]"
-                }`}
-            >
-              <StravaIcon />
-              <span className="hidden sm:inline">Activity Pulse</span>
-              <span className="sm:hidden">Activity</span>
-            </button>
+          <div className="flex gap-2">
             <button
               onClick={() => setActiveTab("spotify")}
-              className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium transition-all sm:px-4 sm:py-2 sm:text-sm ${activeTab === "spotify"
+              className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium transition-all sm:px-4 sm:py-2 sm:text-sm ${
+                activeTab === "spotify"
                   ? "bg-[#1DB954] text-white"
                   : "text-gray-600 hover:text-[#1a1a1a]"
-                }`}
+              }`}
             >
               <SpotifyIcon />
               <span className="hidden sm:inline">Recently Played</span>
               <span className="sm:hidden">Music</span>
             </button>
-          </div> */}
+            <button
+              onClick={() => setActiveTab("strava")}
+              className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium transition-all sm:px-4 sm:py-2 sm:text-sm ${
+                activeTab === "strava"
+                  ? "bg-[#FC4C02] text-white"
+                  : "text-gray-600 hover:text-[#1a1a1a]"
+              }`}
+            >
+              <StravaIcon />
+              <span className="hidden sm:inline">Activity Pulse</span>
+              <span className="sm:hidden">Activity</span>
+            </button>
+          </div>
         </div>
 
-        {isLoading ? (
+        {(activeTab === "strava" ? isStravaLoading : isSpotifyLoading) ? (
           <div className="flex items-center justify-center rounded-2xl border border-[#E5E5E5] bg-white p-8 sm:p-12">
             <div className="text-center">
               <div
-                className={`mb-4 inline-block h-6 w-6 animate-spin rounded-full border-4 border-t-transparent sm:h-8 sm:w-8 ${activeTab === "spotify" ? "border-[#1DB954]" : "border-[#FC4C02]"
-                  }`}
+                className={`mb-4 inline-block h-6 w-6 animate-spin rounded-full border-4 border-t-transparent sm:h-8 sm:w-8 ${
+                  activeTab === "spotify"
+                    ? "border-[#1DB954]"
+                    : "border-[#FC4C02]"
+                }`}
               ></div>
               <p className="text-sm text-gray-600 sm:text-base">Loading...</p>
             </div>
           </div>
-        ) : activeTab === "spotify" ? (
-          // Spotify Content
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-            {featuredTrack && (
-              <motion.div
-                key="spotify-featured"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="group relative overflow-hidden rounded-2xl bg-[#1DB954] p-4 sm:p-6 lg:col-span-2"
-              >
-                <div className="absolute right-3 top-3 z-10 text-white opacity-90 sm:right-4 sm:top-4">
-                  <SpotifyIcon />
-                </div>
-                <div className="flex flex-col items-center text-center">
-                  <div className="relative mb-3 h-32 w-32 overflow-hidden rounded-lg bg-gray-800 sm:mb-4 sm:h-48 sm:w-48">
-                    <Image
-                      src={featuredTrack.albumArt}
-                      alt={`${featuredTrack.title} by ${featuredTrack.artist}`}
-                      fill
-                      className="object-cover"
-                      unoptimized
-                    />
-                  </div>
-                  <h3 className="mb-2 text-lg font-bold text-white sm:text-xl md:text-2xl lg:text-3xl">
-                    {featuredTrack.title}
-                  </h3>
-                  <p className="mb-3 text-sm text-white/90 sm:mb-4 sm:text-base md:text-lg">
-                    {featuredTrack.artist}
-                  </p>
-                  <div className="flex items-center gap-3">
-                    <a
-                      href={featuredTrack.spotifyUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 text-xs text-white transition-all hover:bg-white/20 sm:px-4 sm:py-2 sm:text-sm"
-                    >
-                      <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4" />
-                      Open in Spotify
-                    </a>
-                    <a
-                      href={featuredTrack.spotifyUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#1DB954] transition-all hover:scale-110 sm:h-12 sm:w-12"
-                    >
-                      <Play className="ml-0.5 h-5 w-5 fill-current sm:ml-1 sm:h-6 sm:w-6" />
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
+        ) : activeTab === "spotify" && !spotifyConfigured ? (
+          <div className="flex flex-col items-center justify-center rounded-2xl border border-[#E5E5E5] bg-white p-6 text-center sm:p-8 md:p-12">
+            <SpotifyIcon />
+            <h3 className="mb-2 mt-4 font-serif text-lg font-bold text-[#1a1a1a] sm:text-xl">
+              Spotify Not Configured
+            </h3>
+            <p className="text-sm text-gray-600 sm:text-base">
+              Add SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET to your .env file.
+            </p>
+          </div>
+        ) : activeTab === "spotify" && !spotifyAuthenticated ? (
+          <div className="flex flex-col items-center justify-center rounded-2xl border border-[#E5E5E5] bg-white p-6 text-center sm:p-8 md:p-12">
+            <SpotifyIcon />
+            <h3 className="mb-2 mt-4 font-serif text-lg font-bold text-[#1a1a1a] sm:text-xl">
+              Connect Your Spotify Account
+            </h3>
+            <p className="mb-6 text-sm text-gray-600 sm:text-base">
+              Connect once to get your refresh token, then add it to .env so
+              your tracks appear for all visitors.
+            </p>
+            <button
+              onClick={handleConnectSpotify}
+              className="rounded-full bg-[#1DB954] px-5 py-2.5 text-sm font-semibold text-white transition-all hover:bg-[#1ed760] sm:px-6 sm:py-3"
+            >
+              Connect with Spotify
+            </button>
+            {spotifyError && (
+              <p className="mt-4 text-xs text-red-600 sm:text-sm">
+                {spotifyError}
+              </p>
             )}
-
-            {/* Track list */}
-            <div className="flex flex-col gap-4">
-              {listTracks.map((track, index) => (
-                <motion.a
-                  key={track.id}
-                  href={track.spotifyUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  initial={{ opacity: 0, x: 20 }}
+          </div>
+        ) : activeTab === "spotify" && spotifyError ? (
+          <div className="flex flex-col items-center justify-center rounded-2xl border border-[#E5E5E5] bg-white p-6 text-center sm:p-8 md:p-12">
+            <p className="mb-4 text-sm text-red-600 sm:text-base">
+              {spotifyError}
+            </p>
+            <button
+              onClick={handleConnectSpotify}
+              className="rounded-full bg-[#1DB954] px-5 py-2.5 text-sm font-semibold text-white transition-all hover:bg-[#1ed760] sm:px-6 sm:py-3"
+            >
+              Reconnect Spotify
+            </button>
+          </div>
+        ) : activeTab === "spotify" && tracks.length === 0 ? (
+          <div className="flex items-center justify-center rounded-2xl border border-[#E5E5E5] bg-white p-8 sm:p-12">
+            <p className="text-sm text-gray-600 sm:text-base">
+              No tracks found.
+            </p>
+          </div>
+        ) : activeTab === "spotify" ? (
+          <>
+            <div className="mb-6 flex gap-2">
+              <button
+                onClick={() => setSpotifySubTab("top")}
+                className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all sm:px-4 sm:py-2 sm:text-sm ${
+                  spotifySubTab === "top"
+                    ? "bg-gray-200 text-[#1a1a1a]"
+                    : "text-gray-600 hover:text-[#1a1a1a]"
+                }`}
+              >
+                Top Tracks
+              </button>
+              <button
+                onClick={() => setSpotifySubTab("recently")}
+                className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all sm:px-4 sm:py-2 sm:text-sm ${
+                  spotifySubTab === "recently"
+                    ? "bg-gray-200 text-[#1a1a1a]"
+                    : "text-gray-600 hover:text-[#1a1a1a]"
+                }`}
+              >
+                Recently Played
+              </button>
+            </div>
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+              {featuredTrack && (
+                <motion.div
+                  key="spotify-featured"
+                  initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
-                  className={`group relative overflow-hidden rounded-xl ${spotifyCardColors[index]} p-3 transition-transform hover:scale-[1.02] sm:p-4`}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  className="group relative overflow-hidden rounded-2xl bg-[#1DB954] p-4 sm:p-6 lg:col-span-2"
                 >
-                  <div className="absolute right-2 top-2 z-10 text-white opacity-70 sm:right-3 sm:top-3">
+                  <div className="absolute right-3 top-3 z-10 text-white opacity-90 sm:right-4 sm:top-4">
                     <SpotifyIcon />
                   </div>
-                  <div className="flex items-center gap-2 sm:gap-4">
-                    <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-gray-700 sm:h-16 sm:w-16">
+                  <div className="flex flex-col items-center text-center">
+                    <div className="relative mb-3 h-32 w-32 overflow-hidden rounded-lg bg-gray-800 sm:mb-4 sm:h-48 sm:w-48">
                       <Image
-                        src={track.albumArt}
-                        alt={`${track.title} by ${track.artist}`}
+                        src={featuredTrack.albumArt}
+                        alt={`${featuredTrack.title} by ${featuredTrack.artist}`}
                         fill
                         className="object-cover"
                         unoptimized
                       />
                     </div>
-                    <div className="min-w-0 flex-1">
-                      <h4 className="mb-0.5 truncate text-sm font-semibold text-white sm:mb-1 sm:text-base">
-                        {track.title}
-                      </h4>
-                      <p className="truncate text-xs text-white/80 sm:text-sm">
-                        {track.artist}
-                      </p>
-                    </div>
-                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-white transition-all group-hover:bg-white/20 sm:h-8 sm:w-8">
-                      <Play className="ml-0.5 h-3 w-3 fill-current sm:h-4 sm:w-4" />
+                    <h3 className="mb-2 text-lg font-bold text-white sm:text-xl md:text-2xl lg:text-3xl">
+                      {featuredTrack.title}
+                    </h3>
+                    <p className="mb-3 text-sm text-white/90 sm:mb-4 sm:text-base md:text-lg">
+                      {featuredTrack.artist}
+                    </p>
+                    <div className="flex items-center gap-3">
+                      <a
+                        href={featuredTrack.spotifyUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 text-xs text-white transition-all hover:bg-white/20 sm:px-4 sm:py-2 sm:text-sm"
+                      >
+                        <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4" />
+                        Open in Spotify
+                      </a>
+                      <a
+                        href={featuredTrack.spotifyUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#1DB954] transition-all hover:scale-110 sm:h-12 sm:w-12"
+                      >
+                        <Play className="ml-0.5 h-5 w-5 fill-current sm:ml-1 sm:h-6 sm:w-6" />
+                      </a>
                     </div>
                   </div>
-                </motion.a>
-              ))}
+                </motion.div>
+              )}
+
+              {/* Track list */}
+              <div className="flex flex-col gap-4">
+                {listTracks.map((track, index) => (
+                  <motion.a
+                    key={track.id}
+                    href={track.spotifyUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
+                    className={`group relative overflow-hidden rounded-xl ${spotifyCardColors[index]} p-3 transition-transform hover:scale-[1.02] sm:p-4`}
+                  >
+                    <div className="absolute right-2 top-2 z-10 text-white opacity-70 sm:right-3 sm:top-3">
+                      <SpotifyIcon />
+                    </div>
+                    <div className="flex items-center gap-2 sm:gap-4">
+                      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-gray-700 sm:h-16 sm:w-16">
+                        <Image
+                          src={track.albumArt}
+                          alt={`${track.title} by ${track.artist}`}
+                          fill
+                          className="object-cover"
+                          unoptimized
+                        />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <h4 className="mb-0.5 truncate text-sm font-semibold text-white sm:mb-1 sm:text-base">
+                          {track.title}
+                        </h4>
+                        <p className="truncate text-xs text-white/80 sm:text-sm">
+                          {track.artist}
+                        </p>
+                      </div>
+                      <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-white transition-all group-hover:bg-white/20 sm:h-8 sm:w-8">
+                        <Play className="ml-0.5 h-3 w-3 fill-current sm:h-4 sm:w-4" />
+                      </div>
+                    </div>
+                  </motion.a>
+                ))}
+              </div>
             </div>
-          </div>
+          </>
         ) : (
           // Strava Content
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -496,14 +620,19 @@ export default function RecentActivitySection() {
 
                 {/* Route Map or Activity Icon */}
                 <div className="mb-4 flex h-40 items-center justify-center sm:h-56">
-                  {isRunActivity(featuredActivity.type) && featuredActivity.polyline ? (
+                  {isRunActivity(featuredActivity.type) &&
+                  featuredActivity.polyline ? (
                     <svg
                       viewBox="0 0 300 200"
                       className="h-full w-full max-w-md"
                       preserveAspectRatio="xMidYMid meet"
                     >
                       <path
-                        d={polylineToSvgPath(featuredActivity.polyline, 300, 200)}
+                        d={polylineToSvgPath(
+                          featuredActivity.polyline,
+                          300,
+                          200,
+                        )}
                         fill="none"
                         stroke="#1a1a1a"
                         strokeWidth="2"
@@ -518,7 +647,10 @@ export default function RecentActivitySection() {
                     </div>
                   ) : (
                     <div className="flex flex-col items-center gap-3 rounded-2xl bg-[#1a1a1a]/10 px-12 py-8">
-                      <ActivityIcon type={featuredActivity.type} className="h-20 w-20 text-[#1a1a1a]/70" />
+                      <ActivityIcon
+                        type={featuredActivity.type}
+                        className="h-20 w-20 text-[#1a1a1a]/70"
+                      />
                       <span className="text-lg font-medium text-[#1a1a1a]/70">
                         {featuredActivity.type}
                       </span>
@@ -529,7 +661,9 @@ export default function RecentActivitySection() {
                 {/* Activity Details */}
                 <div className="space-y-3">
                   <div>
-                    <p className="text-xs text-[#1a1a1a]/70 sm:text-sm">{formatDate(featuredActivity.startDate)}</p>
+                    <p className="text-xs text-[#1a1a1a]/70 sm:text-sm">
+                      {formatDate(featuredActivity.startDate)}
+                    </p>
                     <h3 className="text-lg font-bold text-[#1a1a1a] sm:text-xl md:text-2xl">
                       {featuredActivity.name}
                     </h3>
@@ -588,7 +722,10 @@ export default function RecentActivitySection() {
                   </div>
                   <div className="flex items-center gap-3 sm:gap-4">
                     <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-white/10 text-white sm:h-14 sm:w-14">
-                      <ActivityIcon type={activity.type} className="h-6 w-6 sm:h-7 sm:w-7" />
+                      <ActivityIcon
+                        type={activity.type}
+                        className="h-6 w-6 sm:h-7 sm:w-7"
+                      />
                     </div>
                     <div className="min-w-0 flex-1">
                       <h4 className="mb-0.5 truncate text-sm font-semibold text-white sm:mb-1 sm:text-base">
@@ -596,7 +733,9 @@ export default function RecentActivitySection() {
                       </h4>
                       <div className="flex items-center gap-3 text-xs text-white/80 sm:text-sm">
                         {hasDistanceData(activity.type) && (
-                          <span className="font-medium">{activity.distanceKm} km</span>
+                          <span className="font-medium">
+                            {activity.distanceKm} km
+                          </span>
                         )}
                         <span>{activity.movingTimeFormatted}</span>
                       </div>
@@ -607,7 +746,9 @@ export default function RecentActivitySection() {
                     {activity.achievementCount > 0 && (
                       <div className="flex items-center gap-1 text-yellow-400">
                         <Trophy className="h-4 w-4" />
-                        <span className="text-xs font-medium">{activity.achievementCount}</span>
+                        <span className="text-xs font-medium">
+                          {activity.achievementCount}
+                        </span>
                       </div>
                     )}
                   </div>

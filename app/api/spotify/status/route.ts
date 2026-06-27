@@ -1,12 +1,9 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
+import { isSpotifyAuthenticated, isSpotifyConfigured } from "@/app/lib/spotify";
 
 export async function GET() {
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get("spotify_access_token")?.value;
-  const refreshToken = cookieStore.get("spotify_refresh_token")?.value;
+  const configured = isSpotifyConfigured();
+  const authenticated = configured && (await isSpotifyAuthenticated());
 
-  return NextResponse.json({
-    authenticated: !!(accessToken || refreshToken),
-  });
+  return NextResponse.json({ configured, authenticated });
 }

@@ -38,21 +38,29 @@ The Spotify Web API is **completely FREE** to use! You just need to create a dev
    SPOTIFY_CLIENT_ID=your_client_id_here
    SPOTIFY_CLIENT_SECRET=your_client_secret_here
    SPOTIFY_REDIRECT_URI=http://localhost:3000/api/spotify/callback
+   SPOTIFY_REFRESH_TOKEN=your_refresh_token_here
    ```
+
+   The refresh token is obtained once via OAuth (Step 4). After adding it to `.env`, all visitors will see your tracks without needing to connect.
 
 3. **Never commit `.env.local` to git!** It's already in `.gitignore`
 
-## Step 4: Test the Integration
+## Step 4: Connect and Get Refresh Token
 
 1. Start your development server:
    ```bash
    npm run dev
    ```
 
-2. Navigate to your home page
-3. You should see a "Connect with Spotify" button in the Spotify section
-4. Click it to authenticate with Spotify
-5. After authentication, your recently played tracks and top tracks will appear!
+2. Navigate to your home page and click **Connect with Spotify** in the Spotify section
+3. Authorize the app — you'll see a page with your `SPOTIFY_REFRESH_TOKEN`
+4. Copy the refresh token into your `.env` file and restart the dev server
+
+## Step 5: Verify the Integration
+
+1. Reload your home page
+2. Switch to the **Music** tab in the Life in Motion section
+3. Your recently played tracks and top tracks should appear!
 
 ## How It Works
 

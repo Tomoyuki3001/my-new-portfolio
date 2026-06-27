@@ -11,85 +11,8 @@ interface Track {
   artist: string;
   albumArt: string;
   spotifyUrl: string;
-  previewUrl?: string;
+  previewUrl?: string | null;
 }
-
-// Demo data for when Spotify API is not configured
-const demoRecentlyPlayed: Track[] = [
-  {
-    id: "demo-1",
-    title: "Hard to Sleep",
-    artist: "Gracie Abrams",
-    albumArt: "https://i.scdn.co/image/ab67616d0000b273c5649add07ed3720be9d5526",
-    spotifyUrl: "https://open.spotify.com/track/demo1",
-  },
-  {
-    id: "demo-2",
-    title: "For Tonight",
-    artist: "GIVĒON",
-    albumArt: "https://i.scdn.co/image/ab67616d0000b273c5649add07ed3720be9d5526",
-    spotifyUrl: "https://open.spotify.com/track/demo2",
-  },
-  {
-    id: "demo-3",
-    title: "I Don't Want You Back",
-    artist: "AJ Mitchell",
-    albumArt: "https://i.scdn.co/image/ab67616d0000b273c5649add07ed3720be9d5526",
-    spotifyUrl: "https://open.spotify.com/track/demo3",
-  },
-  {
-    id: "demo-4",
-    title: "Giving Up Ground",
-    artist: "Chelsea Cutler, Quinn XCII",
-    albumArt: "https://i.scdn.co/image/ab67616d0000b273c5649add07ed3720be9d5526",
-    spotifyUrl: "https://open.spotify.com/track/demo4",
-  },
-  {
-    id: "demo-5",
-    title: "When love becomes goodbye",
-    artist: "BOL4",
-    albumArt: "https://i.scdn.co/image/ab67616d0000b273c5649add07ed3720be9d5526",
-    spotifyUrl: "https://open.spotify.com/track/demo5",
-  },
-];
-
-const demoTopTracks: Track[] = [
-  {
-    id: "demo-top-1",
-    title: "Blinding Lights",
-    artist: "The Weeknd",
-    albumArt: "https://i.scdn.co/image/ab67616d0000b273c5649add07ed3720be9d5526",
-    spotifyUrl: "https://open.spotify.com/track/demo-top1",
-  },
-  {
-    id: "demo-top-2",
-    title: "Watermelon Sugar",
-    artist: "Harry Styles",
-    albumArt: "https://i.scdn.co/image/ab67616d0000b273c5649add07ed3720be9d5526",
-    spotifyUrl: "https://open.spotify.com/track/demo-top2",
-  },
-  {
-    id: "demo-top-3",
-    title: "Levitating",
-    artist: "Dua Lipa",
-    albumArt: "https://i.scdn.co/image/ab67616d0000b273c5649add07ed3720be9d5526",
-    spotifyUrl: "https://open.spotify.com/track/demo-top3",
-  },
-  {
-    id: "demo-top-4",
-    title: "Good 4 U",
-    artist: "Olivia Rodrigo",
-    albumArt: "https://i.scdn.co/image/ab67616d0000b273c5649add07ed3720be9d5526",
-    spotifyUrl: "https://open.spotify.com/track/demo-top4",
-  },
-  {
-    id: "demo-top-5",
-    title: "Stay",
-    artist: "The Kid LAROI, Justin Bieber",
-    albumArt: "https://i.scdn.co/image/ab67616d0000b273c5649add07ed3720be9d5526",
-    spotifyUrl: "https://open.spotify.com/track/demo-top5",
-  },
-];
 
 const SpotifyIcon = () => (
   <svg
@@ -105,47 +28,42 @@ const SpotifyIcon = () => (
 export default function SpotifySection() {
   const [activeTab, setActiveTab] = useState<"recently" | "top">("recently");
   const [tracks, setTracks] = useState<Track[]>([]);
+  const [isConfigured, setIsConfigured] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const cardColors = [
-    "bg-[#8B1538]", // dark red
-    "bg-[#8B1538]", // dark red
-    "bg-[#2a2a2a]", // dark gray
-    "bg-[#2a2a2a]", // dark gray
+    "bg-[#8B1538]",
+    "bg-[#8B1538]",
+    "bg-[#2a2a2a]",
+    "bg-[#2a2a2a]",
   ];
 
-  // Check authentication status on mount
   useEffect(() => {
-    const checkAuth = async () => {
+    const checkStatus = async () => {
       try {
         const response = await fetch("/api/spotify/status");
         const data = await response.json();
+        setIsConfigured(data.configured);
         setIsAuthenticated(data.authenticated);
-      } catch (err) {
-        console.error("Error checking auth status:", err);
-        // If API fails, assume not configured and use demo mode
+      } catch {
+        setIsConfigured(false);
         setIsAuthenticated(false);
       } finally {
         setIsLoading(false);
       }
     };
 
-    checkAuth();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    checkStatus();
   }, []);
 
-  // Fetch tracks when tab changes or when authenticated
   useEffect(() => {
-    // If not authenticated, use demo data
     if (!isAuthenticated) {
-      setTracks(activeTab === "recently" ? demoRecentlyPlayed : demoTopTracks);
-      setIsLoading(false);
+      setTracks([]);
       return;
     }
 
-    // If authenticated, fetch real data
     const fetchTracks = async () => {
       setIsLoading(true);
       setError(null);
@@ -162,24 +80,18 @@ export default function SpotifySection() {
         if (!response.ok) {
           if (response.status === 401) {
             setIsAuthenticated(false);
-            // Fall back to demo data
-            setTracks(activeTab === "recently" ? demoRecentlyPlayed : demoTopTracks);
             setError("Please reconnect your Spotify account.");
           } else {
             setError(data.error || "Failed to fetch tracks");
-            // Fall back to demo data on error
-            setTracks(activeTab === "recently" ? demoRecentlyPlayed : demoTopTracks);
           }
-          setIsLoading(false);
+          setTracks([]);
           return;
         }
 
         setTracks(data.tracks || []);
-      } catch (err) {
-        console.error("Error fetching tracks:", err);
+      } catch {
         setError("Failed to load tracks. Please try again.");
-        // Fall back to demo data when API fails
-        setTracks(activeTab === "recently" ? demoRecentlyPlayed : demoTopTracks);
+        setTracks([]);
       } finally {
         setIsLoading(false);
       }
@@ -196,10 +108,9 @@ export default function SpotifySection() {
       if (data.authUrl) {
         window.location.href = data.authUrl;
       } else {
-        setError("Failed to initiate Spotify connection.");
+        setError(data.error || "Failed to initiate Spotify connection.");
       }
-    } catch (err) {
-      console.error("Error connecting to Spotify:", err);
+    } catch {
       setError("Failed to connect to Spotify. Please try again.");
     }
   };
@@ -215,43 +126,53 @@ export default function SpotifySection() {
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
-        {/* Header with Tabs */}
         <div className="mb-6 flex flex-col gap-4 sm:mb-8 sm:flex-row sm:justify-between">
           <h2 className="font-serif text-xl font-bold text-[#1a1a1a] sm:text-2xl md:text-3xl">
             Recently Played
           </h2>
-          <div className="flex gap-2">
-            <button
-              onClick={() => setActiveTab("recently")}
-              className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all sm:px-4 sm:py-2 sm:text-sm ${activeTab === "recently"
-                  ? "bg-gray-200 text-[#1a1a1a]"
-                  : "text-gray-600 hover:text-[#1a1a1a]"
-                }`}
-            >
-              Recently Played
-            </button>
-            <button
-              onClick={() => setActiveTab("top")}
-              className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all sm:px-4 sm:py-2 sm:text-sm ${activeTab === "top"
-                  ? "bg-gray-200 text-[#1a1a1a]"
-                  : "text-gray-600 hover:text-[#1a1a1a]"
-                }`}
-            >
-              Top Tracks
-            </button>
-          </div>
+          {isAuthenticated && (
+            <div className="flex gap-2">
+              <button
+                onClick={() => setActiveTab("recently")}
+                className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all sm:px-4 sm:py-2 sm:text-sm ${activeTab === "recently"
+                    ? "bg-gray-200 text-[#1a1a1a]"
+                    : "text-gray-600 hover:text-[#1a1a1a]"
+                  }`}
+              >
+                Recently Played
+              </button>
+              <button
+                onClick={() => setActiveTab("top")}
+                className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all sm:px-4 sm:py-2 sm:text-sm ${activeTab === "top"
+                    ? "bg-gray-200 text-[#1a1a1a]"
+                    : "text-gray-600 hover:text-[#1a1a1a]"
+                  }`}
+              >
+                Top Tracks
+              </button>
+            </div>
+          )}
         </div>
 
-        {/* Connect Button or Content */}
-        {!isAuthenticated && tracks.length === 0 && !isLoading ? (
+        {!isConfigured ? (
+          <div className="flex flex-col items-center justify-center rounded-2xl border border-[#E5E5E5] bg-white p-6 text-center sm:p-8 md:p-12">
+            <SpotifyIcon />
+            <h3 className="mb-2 mt-4 font-serif text-lg font-bold text-[#1a1a1a] sm:text-xl">
+              Spotify Not Configured
+            </h3>
+            <p className="text-sm text-gray-600 sm:text-base">
+              Add SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET to your .env file.
+            </p>
+          </div>
+        ) : !isAuthenticated ? (
           <div className="flex flex-col items-center justify-center rounded-2xl border border-[#E5E5E5] bg-white p-6 text-center sm:p-8 md:p-12">
             <SpotifyIcon />
             <h3 className="mb-2 mt-4 font-serif text-lg font-bold text-[#1a1a1a] sm:text-xl">
               Connect Your Spotify Account
             </h3>
             <p className="mb-6 text-sm text-gray-600 sm:text-base">
-              Connect your Spotify account to display your recently played tracks
-              and top tracks.
+              Connect once to get your refresh token, then add it to .env so your
+              tracks appear for all visitors.
             </p>
             <button
               onClick={handleConnectSpotify}
@@ -262,9 +183,6 @@ export default function SpotifySection() {
             {error && (
               <p className="mt-4 text-xs text-red-600 sm:text-sm">{error}</p>
             )}
-            <p className="mt-4 text-xs text-gray-500">
-              Note: Currently showing demo data. Connect your account to see your real tracks.
-            </p>
           </div>
         ) : isLoading ? (
           <div className="flex items-center justify-center rounded-2xl border border-[#E5E5E5] bg-white p-8 sm:p-12">
@@ -289,7 +207,6 @@ export default function SpotifySection() {
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-            {/* Featured Track Card */}
             {featuredTrack && (
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
@@ -357,7 +274,6 @@ export default function SpotifySection() {
               </motion.div>
             )}
 
-            {/* Track List */}
             <div className="flex flex-col gap-4">
               {listTracks.map((track, index) => (
                 <motion.div
@@ -381,7 +297,7 @@ export default function SpotifySection() {
                         unoptimized
                       />
                     </div>
-                    <div className="flex-1 min-w-0">
+                    <div className="min-w-0 flex-1">
                       <h4 className="mb-0.5 truncate text-sm font-semibold text-white sm:mb-1 sm:text-base">
                         {track.title}
                       </h4>
